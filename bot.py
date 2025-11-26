@@ -21,6 +21,7 @@ def get_main_menu():
         [KeyboardButton(text="👨‍💼 Сотрудники деканата")],
         [KeyboardButton(text="👩‍🏫 Преподаватели")],
         [KeyboardButton(text="📚 Зачётная книжка")],
+        [KeyboardButton(text="Полезные кабинеты")],
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
@@ -161,6 +162,27 @@ async def zachetka(message: types.Message):
         "Электронная зачётная книжка ИжГТУ",
         reply_markup=keyboard
     )
+
+# === ПОЛЕЗНЫЕ КАБИНЕТЫ ===
+@router.message(F.text == "Полезные кабинеты")
+async def useful_rooms(message: types.Message):
+    text = (
+        "<b>Полезные кабинеты ИжГТУ</b>\n\n"
+        "Договорной отдел\n"
+        "— забрать договор об учёбе\n"
+        "— подписать доп. соглашения\n"
+        "Кабинет: <b>1-100а</b>\n\n"
+        "Военный стол (для юношей)\n"
+        "— воинский учёт, отсрочка\n"
+        "Кабинет: <b>1-113</b>"
+    )
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
+    ])
+
+    await message.answer(text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
+    
 # ------------------- ОБРАБОТКА CALLBACK -------------------
 @router.callback_query()
 async def callbacks(callback: types.CallbackQuery):
@@ -191,6 +213,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
