@@ -57,11 +57,11 @@ async def schedule(message: types.Message):
 @router.message(F.text == "👨‍💼 Сотрудники деканата")
 async def decanat_list(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="emp_1")],
-        [InlineKeyboardButton(text="Козлова Наталья Александровна", callback_data="emp_2")],
-        [InlineKeyboardButton(text="Смирнов Дмитрий Сергеевич", callback_data="emp_3")],
-        [InlineKeyboardButton(text="Волкова Ольга Николаевна", callback_data="emp_4")],
-        [InlineKeyboardButton(text="Петров Алексей Владимирович", callback_data="emp_5")],
+        [InlineKeyboardButton(text="Кузнецов Андрей Леонидович", callback_data="emp_1")],
+        [InlineKeyboardButton(text="Мышкина Наталья Юрьевна", callback_data="emp_2")],
+        [InlineKeyboardButton(text="Горохова Наталия Викторовна", callback_data="emp_3")],
+        [InlineKeyboardButton(text="Вычужанина Елена Федоровна", callback_data="emp_4")],
+        [InlineKeyboardButton(text="Клименко Екатерина Александровна", callback_data="emp_5")],
         [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
     ])
     
@@ -77,54 +77,53 @@ async def decanat_list(message: types.Message):
 async def show_employee(callback: types.CallbackQuery):
     employees = {
         "emp_1": {
-            "name": "Шулакова Елена Витальевна",
-            "post": "Старший преподаватель",
-            "phone": "—",
-            "email": "evstud@gmail.com",
-            "vk": "https://vk.com/id390204733",
-            "cab": "кафедра 6-509, 6-501, 6-511",
-            "subjects": "Введение в специальность, Теория менеджмента",
-            "photo": "https://iimg.su/i/tVTzIK"   # ← замени на своё фото
+            "name": "Кузнецов Андрей Леонидович",
+            "post": "Декан",
+            "phone": "8 (3412) 77-60-55",
+            "email": "alkuznetsov_63@mail.ru",
+            "vk": "-",
+            "cab": "кафедра 6-203",
+            "photo": "https://iimg.su/i/jkBVMz"
         },
         "emp_2": {
-            "name": "Козлова Наталья Александровна",
-            "post": "Доцент, к.э.н.",
-            "phone": "+7 (3412) 58-77-55 доб. 123",
-            "email": "kozlova@istu.ru",
-            "vk": "https://vk.com/id12345678",
-            "cab": "6-507",
-            "subjects": "Экономика предприятия, Управление персоналом",
-            "photo": "https://iimg.su/i/tVTzIK"
+            "name": "Мышкина Наталья Юрьевна",
+            "post": "Ведущий документовед",
+            "phone": "8 (3412) 770971, 89199156319",
+            "email": "managerzfo@yandex.ru",
+            "vk": "https://vk.com/id61466470",
+            "cab": "6-200",
+            "subjects": "Получение справок, получение ведомостей посещаемости",
+            "photo": "https://iimg.su/i/mj7VzN"
         },
         "emp_3": {
-            "name": "Смирнов Дмитрий Сергеевич",
-            "post": "Старший преподаватель",
-            "phone": "—",
-            "email": "d.smirnov@istu.ru",
-            "vk": "https://vk.com/dmitry_smirnov",
-            "cab": "6-510",
-            "subjects": "Информационные технологии в управлении, Базы данных",
-            "photo": "https://iimg.su/i/tVTzIK"
+            "name": "Горохова Наталия Викторовна",
+            "post": "Ведущий документовед",
+            "phone": "8 (3412) 770971",
+            "email": "human@istu.ru",
+            "vk": "-",
+            "cab": "6-200",
+            "subjects": "Перевод",
+            "photo": "https://iimg.su/i/hCfJJ6"
         },
         "emp_4": {
-            "name": "Волкова Ольга Николаевна",
-            "post": "Заведующая кафедрой",
-            "phone": "+7 (3412) 58-77-55 доб. 101",
-            "email": "volkova.on@istu.ru",
-            "vk": "https://vk.com/id9876543",
-            "cab": "6-505",
-            "subjects": "Стратегический менеджмент, Корпоративное управление",
-            "photo": "https://iimg.su/i/tVTzIK"
+            "name": "Вычужанина Елена Федоровна",
+            "post": "И.о Заведующего кафедры",
+            "phone": "8-912-850-17-39",
+            "email": "mim@istu.ru",
+            "vk": "https://vk.com/id880437598",
+            "cab": "6-501 или кафедра 6-509",
+            "subjects": "Организационные вопросы, вопросы по учебе",
+            "photo": "https://iimg.su/i/CJNQlJ"
         },
         "emp_5": {
-            "name": "Петров Алексей Владимирович",
-            "post": "Доцент, к.т.н.",
-            "phone": "+7 (3412) 58-77-55 доб. 108",
-            "email": "petrov.av@istu.ru",
-            "vk": "https://vk.com/alex_petrov_istu",
-            "cab": "6-508",
-            "subjects": "Проектный менеджмент, Инновационный менеджмент",
-            "photo": "https://iimg.su/i/tVTzIK"
+            "name": "Клименко Екатерина Александровна",
+            "post": "Ведущий документовед ",
+            "phone": "8-912-016-47-71",
+            "email": "e.a.trefilova@istu.ru",
+            "vk": "https://vk.com/id880437598",
+            "cab": "кафедра 6-509",
+            "subjects": "Организационные вопросы, вопросы по учебе
+            "photo": "https://iimg.su/i/Xhp7A8"
         },
     }
 
@@ -140,7 +139,7 @@ async def show_employee(callback: types.CallbackQuery):
         f"Почта: {emp['email']}\n"
         f"ВК: {emp['vk']}\n"
         f"Кабинеты: {emp['cab']}\n"
-        f"Дисциплины: {emp['subjects']}"
+        f"Вопросы, по которым можно обратиться: {emp['subjects']}"
     )
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -160,11 +159,11 @@ async def show_employee(callback: types.CallbackQuery):
 @router.callback_query(F.data == "decanat_back")
 async def decanat_back(callback: types.CallbackQuery):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="emp_1")],
-        [InlineKeyboardButton(text="Козлова Наталья Александровна", callback_data="emp_2")],
-        [InlineKeyboardButton(text="Смирнов Дмитрий Сергеевич", callback_data="emp_3")],
-        [InlineKeyboardButton(text="Волкова Ольга Николаевна", callback_data="emp_4")],
-        [InlineKeyboardButton(text="Петров Алексей Владимирович", callback_data="emp_5")],
+        [InlineKeyboardButton(text="Кузнецов Андрей Леонидович", callback_data="emp_1")],
+        [InlineKeyboardButton(text="Мышкина Наталья Юрьевна", callback_data="emp_2")],
+        [InlineKeyboardButton(text="Горохова Наталия Викторовна", callback_data="emp_3")],
+        [InlineKeyboardButton(text="Вычужанина Елена Федоровна", callback_data="emp_4")],
+        [InlineKeyboardButton(text="Клименко Екатерина Александровна", callback_data="emp_5")],
         [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
     ])
 
@@ -229,6 +228,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
