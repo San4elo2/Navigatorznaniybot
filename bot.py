@@ -1,15 +1,16 @@
+import os
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import Router
+from aiogram.client.default import DefaultBotProperties
 import asyncio
 import logging
 
-# Твой токен от BotFather
 TOKEN = "8322577955:AAEpkmaX2HwLm9t2Ifo_YlWAoDccpC5w5HM"
 
-bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 router = Router()
 
@@ -115,4 +116,5 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
+
     asyncio.run(main())
