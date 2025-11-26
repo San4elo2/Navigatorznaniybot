@@ -55,7 +55,7 @@ async def schedule(message: types.Message):
 
 # ------------------- СОТРУДНИКИ ДЕКАНАТА -------------------
 # === СОТРУДНИКИ ДЕКАНАТА (С ФОТО) ===
-@router.message(F.text == "Сотрудники деканата")
+@router.message(F.text == "👨‍💼 Сотрудники деканата")
 async def decanat(message: types.Message):
     # Просто замени ссылки на свои фото (загрузи на https://imgur.com)
     employees = [
@@ -158,6 +158,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
