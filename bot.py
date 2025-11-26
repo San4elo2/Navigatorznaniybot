@@ -122,7 +122,7 @@ async def show_employee(callback: types.CallbackQuery):
             "email": "e.a.trefilova@istu.ru",
             "vk": "https://vk.com/id880437598",
             "cab": "кафедра 6-509",
-            "subjects": "Организационные вопросы, вопросы по учебе
+            "subjects": "Организационные вопросы, вопросы по учебе",
             "photo": "https://iimg.su/i/Xhp7A8"
         },
     }
@@ -228,6 +228,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
