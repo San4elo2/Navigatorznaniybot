@@ -20,7 +20,7 @@ def get_main_menu():
         [KeyboardButton(text="📅 Расписание")],
         [KeyboardButton(text="👨‍💼 Сотрудники деканата")],
         [KeyboardButton(text="👩‍🏫 Преподаватели")],
-        [KeyboardButton(text="Зачётная книжка", url="https://ciu.n1.iit.istu.ru/student")],
+        [KeyboardButton(text="Зачётная книжка", url="https://lk.istu.ru/student/book")],
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
@@ -109,6 +109,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
