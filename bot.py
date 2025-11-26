@@ -139,7 +139,7 @@ async def decanat_back(callback: types.CallbackQuery):
     await callback.answer()
 
 # === ПРЕПОДАВАТЕЛИ — СПИСОК ФИО ===
-@router.message(F.text == "Преподаватели")
+@router.message(F.text == "👩‍🏫 Преподаватели")
 async def teachers_list(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="teacher_1")],
@@ -333,6 +333,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
