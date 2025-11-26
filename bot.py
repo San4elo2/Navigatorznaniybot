@@ -72,69 +72,22 @@ async def decanat_list(message: types.Message):
     )
 
 
-# === ИНФОРМАЦИЯ О СОТРУДНИКЕ (БЕЗОПАСНАЯ ВЕРСИЯ) ===
+# === ИНФОРМАЦИЯ О СОТРУДНИКЕ ===
 @router.callback_query(F.data.startswith("emp_"))
 async def show_employee(callback: types.CallbackQuery):
     employees = {
-        "emp_1": {
-            "name": "Кузнецов Андрей Леонидович",
-            "post": "Декан",
-            "phone": "8 (3412) 77-60-55",
-            "email": "alkuznetsov_63@mail.ru",
-            "vk": "—",
-            "cab": "кафедра 6-203",
-            "subjects": "Общие вопросы, утверждение документов",
-            "photo": "https://i.imgur.com/jkBVMz.jpg"  # заменил на рабочую ссылку imgur
-        },
-        "emp_2": {
-            "name": "Мышкина Наталья Юрьевна",
-            "post": "Ведущий документовед",
-            "phone": "8 (3412) 770971, 89199156319",
-            "email": "managerzfo@yandex.ru",
-            "vk": "https://vk.com/id61466470",
-            "cab": "6-200",
-            "subjects": "Получение справок, ведомости посещаемости",
-            "photo": "https://i.imgur.com/mj7VzN.jpg"
-        },
-        "emp_3": {
-            "name": "Горохова Наталия Викторовна",
-            "post": "Ведущий документовед",
-            "phone": "8 (3412) 770971",
-            "email": "human@istu.ru",
-            "vk": "—",
-            "cab": "6-200",
-            "subjects": "Перевод, восстановление, академические отпуска",
-            "photo": "https://i.imgur.com/hCfJJ6.jpg"
-        },
-        "emp_4": {
-            "name": "Вычужанина Елена Федоровна",
-            "post": "И.о. заведующего кафедрой",
-            "phone": "8-912-850-17-39",
-            "email": "mim@istu.ru",
-            "vk": "https://vk.com/id880437598",
-            "cab": "6-501 / 6-509",
-            "subjects": "Организационные вопросы, учебный процесс",
-            "photo": "https://i.imgur.com/CJNQlJ.jpg"
-        },
-        "emp_5": {
-            "name": "Клименко Екатерина Александровна",
-            "post": "Ведущий документовед",
-            "phone": "8-912-016-47-71",
-            "email": "e.a.trefilova@istu.ru",
-            "vk": "https://vk.com/id880437598",
-            "cab": "кафедра 6-509",
-            "subjects": "Справки, заявления, зачётки",
-            "photo": "https://i.imgur.com/Xhp7A8.jpg"
-        },
+        "emp_1": {"name": "Кузнецов Андрей Леонидович", "post": "Декан", "phone": "8 (3412) 77-60-55", "email": "alkuznetsov_63@mail.ru", "vk": "—", "cab": "кафедра 6-203", "subjects": "Общие вопросы, утверждение документов", "photo": "https://i.imgur.com/jkBVMz.jpg"},
+        "emp_2": {"name": "Мышкина Наталья Юрьевна", "post": "Ведущий документовед", "phone": "8 (3412) 770971, 89199156319", "email": "managerzfo@yandex.ru", "vk": "https://vk.com/id61466470", "cab": "6-200", "subjects": "Справки, ведомости посещаемости", "photo": "https://i.imgur.com/mj7VzN.jpg"},
+        "emp_3": {"name": "Горохова Наталия Викторовна", "post": "Ведущий документовед", "phone": "8 (3412) 770971", "email": "human@istu.ru", "vk": "—", "cab": "6-200", "subjects": "Перевод, восстановление, академы", "photo": "https://i.imgur.com/hCfJJ6.jpg"},
+        "emp_4": {"name": "Вычужанина Елена Федоровна", "post": "И.о. заведующего кафедрой", "phone": "8-912-850-17-39", "email": "mim@istu.ru", "vk": "https://vk.com/id880437598", "cab": "6-501 / 6-509", "subjects": "Организационные вопросы, учебный процесс", "photo": "https://i.imgur.com/CJNQlJ.jpg"},
+        "emp_5": {"name": "Клименко Екатерина Александровна", "post": "Ведущий документовед", "phone": "8-912-016-47-71", "email": "e.a.trefilova@istu.ru", "vk": "https://vk.com/id880437598", "cab": "кафедра 6-509", "subjects": "Справки, заявления, зачётки", "photo": "https://i.imgur.com/Xhp7A8.jpg"},
     }
 
     emp = employees.get(callback.data)
     if not emp:
-        await callback.answer("Сотрудник не найден", show_alert=True)
+        await callback.answer("Ошибка", show_alert=True)
         return
 
-    # Защита от отсутствующих полей
-    subjects = emp.get("subjects", "—")
     vk_url = emp["vk"] if emp["vk"].startswith("http") else None
 
     caption = (
@@ -143,33 +96,31 @@ async def show_employee(callback: types.CallbackQuery):
         f"Телефон: {emp['phone']}\n"
         f"Почта: {emp['email']}\n"
         f"Кабинет: {emp['cab']}\n"
-        f"По вопросам: {subjects}"
+        f"По вопросам: {emp['subjects']}"
     )
 
-    # Кнопки
     buttons = []
     if vk_url:
         buttons.append([InlineKeyboardButton(text="Написать в ВК", url=vk_url)])
     buttons += [
-        [InlineKeyboardButton(text="← Назад к списку", callback_data="decanat_back")],
+        [InlineKeyboardButton(text="Назад к списку", callback_data="decanat_back")],
         [InlineKeyboardButton(text="Главное меню", callback_data="back_main")]
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
 
     await callback.message.edit_media(
-        media=types.InputMediaPhoto(
-            media=emp["photo"],
-            caption=caption,
-            parse_mode=ParseMode.HTML
-        ),
+        media=types.InputMediaPhoto(media=emp["photo"], caption=caption, parse_mode=ParseMode.HTML),
         reply_markup=keyboard
     )
     await callback.answer()
 
 
-# === ВЕРНУТЬСЯ К СПИСКУ СОТРУДНИКОВ ===
+# === ВЕРНУТЬСЯ К СПИСКУ — ИСПРАВЛЕННАЯ ВЕРСИЯ ===
 @router.callback_query(F.data == "decanat_back")
 async def decanat_back(callback: types.CallbackQuery):
+    # Удаляем сообщение с фото и отправляем новое текстовое
+    await callback.message.delete()  # удаляем старое фото
+
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Кузнецов Андрей Леонидович", callback_data="emp_1")],
         [InlineKeyboardButton(text="Мышкина Наталья Юрьевна", callback_data="emp_2")],
@@ -179,7 +130,7 @@ async def decanat_back(callback: types.CallbackQuery):
         [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
     ])
 
-    await callback.message.edit_text(
+    await callback.message.answer(
         "<b>Сотрудники деканата</b>\n\nВыберите человека:",
         parse_mode=ParseMode.HTML,
         reply_markup=keyboard
@@ -240,6 +191,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
