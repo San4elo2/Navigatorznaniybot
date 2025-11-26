@@ -20,7 +20,7 @@ def get_main_menu():
         [KeyboardButton(text="📅 Расписание")],
         [KeyboardButton(text="👨‍💼 Сотрудники деканата")],
         [KeyboardButton(text="👩‍🏫 Преподаватели")],
-        [KeyboardButton(text="Зачётная книжка", url="https://lk.istu.ru/student/book")],
+        [KeyboardButton(text="📚 Зачётная книжка")],
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
@@ -78,7 +78,22 @@ async def teachers(message: types.Message):
         [InlineKeyboardButton(text="🔙 Назад", callback_data="back_main")],
     ])
     await message.answer("👩‍🏫 <b>Преподаватели</b>\n\nВыбери кафедру:", reply_markup=keyboard)
+
+# ------------------- ЗАЧЁТНАЯ КНИЖКА -------------------
+@router.message(F.text == "📚 Зачётная книжка")
+async def zachetka(message: types.Message):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(
+            text="Открыть зачётку в браузере",
+            url="https://lk.istu.ru/student/book"
+        )],
+        [InlineKeyboardButton(text="Назад", callback_data="back_main")]
+    ])
     
+    await message.answer(
+        "Электронная зачётная книжка ИжГТУ\n\n"
+        reply_markup=keyboard
+    )
 # ------------------- ОБРАБОТКА CALLBACK -------------------
 @router.callback_query()
 async def callbacks(callback: types.CallbackQuery):
@@ -109,6 +124,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
