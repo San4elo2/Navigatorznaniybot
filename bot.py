@@ -35,17 +35,21 @@ async def cmd_start(message: types.Message):
     )
 
 # ------------------- РАСПИСАНИЕ -------------------
-@router.message(F.text == "📅 Расписание")
+@router.message(F.text.in_({"Расписание", "📅 Расписание"}))  # работает и с эмодзи, и без
 async def schedule(message: types.Message):
+    photo_url = "https://iimg.su/i/tVTzIK"
+
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="На сегодня", callback_data="sched_today")],
-        [InlineKeyboardButton(text="На завтра", callback_data="sched_tomorrow")],
-        [InlineKeyboardButton(text="На неделю", callback_data="sched_week")],
-        [InlineKeyboardButton(text="🔙 Назад", callback_data="back_main")],
+        [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
     ])
-    await message.answer(
-        "📅 <b>Расписание</b>\n\n"
-        "Выбери период:",
+
+    caption = (
+        "Расписание занятий\n\n"
+    )
+
+    await message.answer_photo(
+        photo=photo_url,
+        caption=caption,
         reply_markup=keyboard
     )
 
@@ -121,6 +125,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
