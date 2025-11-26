@@ -8,7 +8,7 @@ from aiogram.client.default import DefaultBotProperties
 import asyncio
 import logging
 
-TOKEN = "8322577955:AAG8z3LcS2U77VGFYZb0LK8V7Xl71-YCX7s"
+TOKEN = "8322577955:AAHsV4GOVDCsKdschVa1MzpJSWSGQ0zMewg"
 
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
@@ -191,6 +191,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
