@@ -85,16 +85,11 @@ async def zachetka(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
             text="Открыть зачётку в браузере",
-            url="https://ciu.n1.iit.istu.ru/student"
+            url="https://lk.istu.ru/student/book"
         )],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     
-    await message.answer(
-        "Электронная зачётная книжка ИжГТУ\n\n"
-        "Логин — номер зачётки (например 23Б1234)\n"
-        "Пароль — как от Wi-Fi и почты вуза",
-        reply_markup=keyboard
     )
 # ------------------- ОБРАБОТКА CALLBACK -------------------
 @router.callback_query()
@@ -126,6 +121,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
