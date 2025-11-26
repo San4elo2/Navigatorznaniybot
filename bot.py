@@ -20,7 +20,7 @@ def get_main_menu():
         [KeyboardButton(text="📅 Расписание")],
         [KeyboardButton(text="👨‍💼 Сотрудники деканата")],
         [KeyboardButton(text="👩‍🏫 Преподаватели")],
-        [KeyboardButton(text="📚 Зачётная книжка")],
+        [KeyboardButton(text="📚 Зачётная книжка", url="https://lk.istu.ru/student/book")],
     ]
     return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
@@ -79,15 +79,6 @@ async def teachers(message: types.Message):
     ])
     await message.answer("👩‍🏫 <b>Преподаватели</b>\n\nВыбери кафедру:", reply_markup=keyboard)
 
-# ------------------- ЗАЧЁТНАЯ КНИЖКА -------------------
-@router.message(F.text == "📚 Зачётная книжка")
-async def zachetka(message: types.Message):
-    await message.answer(
-        "📚 <b>Зачётная книжка</b>\n\n"
-        "Чтобы посмотреть свои оценки, пришли мне номер своей зачётки (например: 23Б1234)"
-    )
-    # Здесь потом можно будет добавить проверку по базе
-
 # ------------------- ОБРАБОТКА CALLBACK -------------------
 @router.callback_query()
 async def callbacks(callback: types.CallbackQuery):
@@ -118,3 +109,4 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
