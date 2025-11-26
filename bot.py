@@ -137,16 +137,136 @@ async def decanat_back(callback: types.CallbackQuery):
         reply_markup=keyboard
     )
     await callback.answer()
-# ------------------- ПРЕПОДАВАТЕЛИ -------------------
-@router.message(F.text == "👩‍🏫 Преподаватели")
-async def teachers(message: types.Message):
+
+# === ПРЕПОДАВАТЕЛИ — СПИСОК ФИО ===
+@router.message(F.text == "Преподаватели")
+async def teachers_list(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Кафедра ИТ", callback_data="dept_it")],
-        [InlineKeyboardButton(text="Кафедра экономики", callback_data="dept_econ")],
-        [InlineKeyboardButton(text="Кафедра иностранных языков", callback_data="dept_lang")],
-        [InlineKeyboardButton(text="🔙 Назад", callback_data="back_main")],
+        [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="teacher_1")],
+        [InlineKeyboardButton(text="Камалетдинов Денис Святославович", callback_data="teacher_2")],
+        [InlineKeyboardButton(text="Груздева Татьяна Витальевна", callback_data="teacher_3")],
+        [InlineKeyboardButton(text="Сальникова Кристина Владимировна", callback_data="teacher_4")],
+        [InlineKeyboardButton(text="Шмелев Олег Валерьевич", callback_data="teacher_5")],
+        # ←←← добавляй сюда новых преподавателей так же
+        [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
     ])
-    await message.answer("👩‍🏫 <b>Преподаватели</b>\n\nВыбери кафедру:", reply_markup=keyboard)
+    
+    await message.answer(
+        "<b>Преподаватели кафедры</b>\n\nВыберите преподавателя:",
+        parse_mode=ParseMode.HTML,
+        reply_markup=keyboard
+    )
+
+
+# === ИНФОРМАЦИЯ О ПРЕПОДАВАТЕЛЕ ===
+@router.callback_query(F.data.startswith("teacher_"))
+async def show_teacher(callback: types.CallbackQuery):
+    teachers = {
+        "teacher_1": {
+            "name": "Шулакова Елена Витальевна",
+            "post": "Старший преподаватель",
+            "phone": "—",
+            "email": "evstud@gmail.com",
+            "vk": "https://vk.com/id390204733",
+            "cab": "6-509, 6-501, 6-511",
+            "subjects": "Введение в специальность, Теория менеджмента",
+            "photo": "https://iimg.su/i/jit4Kx"   # ← замени на своё
+        },
+        "teacher_2": {
+            "name": "Камалетдинов Денис Святославович",
+            "post": "Старший преподаватель",
+            "phone": "-",
+            "email": "Kamaletdinovden@mail.ru",
+            "vk": "https://vk.com/id20529720",
+            "cab": "6-501",
+            "subjects": "Техника личного и коллективного здорово сбережения",
+            "photo": "https://iimg.su/i/08xJwe"
+        },
+        "teacher_3": {
+            "name": "Груздева Татьяна Витальевна",
+            "post": "Преподаватель",
+            "phone": "8-904-835-44-22",
+            "email": "t.v.gruzdeva@gmail.com",
+            "vk": "—",
+            "cab": "6-501",
+            "subjects": "Маркетинг",
+            "photo": "https://iimg.su/i/no7OS8"
+        },
+        "teacher_4": {
+            "name": "Сальникова Кристина Владимировна",
+            "post": "Преподаватель",
+            "phone": "8-951-192-44-04",
+            "email": "kristina-zhelnova@yandex.ru",
+            "vk": "-",
+            "cab": "6-501",
+            "subjects": "Эконометрика",
+            "photo": "https://iimg.su/i/IzJIxN"
+        },
+        "teacher_5": {
+            "name": "Шмелев Олег Валерьевич",
+            "post": "Старший преподаватель",
+            "phone": "-",
+            "email": "oleshm+istu@gmail.com",
+            "vk": "-",
+            "cab": "6-509",
+            "subjects": "Теория игр, Введение в информационные технологии",
+            "photo": "https://iimg.su/i/4ejcG8"
+        },
+        # ←←← добавляй сюда новых преподавателей
+    }
+
+    t = teachers.get(callback.data)
+    if not t:
+        await callback.answer("Преподаватель не найден", show_alert=True)
+        return
+
+    vk_url = t["vk"] if t["vk"].startswith("http") else None
+
+    caption = (
+        f"<b>{t['name']}</b>\n"
+        f"<i>{t['post']}</i>\n\n"
+        f"Телефон: {t['phone']}\n"
+        f"Почта: {t['email']}\n"
+        f"Кабинет: {t['cab']}\n"
+        f"Ведёт дисциплины:\n{t['subjects']}"
+    )
+
+    buttons = []
+    if vk_url:
+        buttons.append([InlineKeyboardButton(text="Написать в ВК", url=vk_url)])
+    buttons += [
+        [InlineKeyboardButton(text="Назад к списку", callback_data="teachers_back")],
+        [InlineKeyboardButton(text="Главное меню", callback_data="back_main")]
+    ]
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+
+    await callback.message.edit_media(
+        media=types.InputMediaPhoto(media=t["photo"], caption=caption, parse_mode=ParseMode.HTML),
+        reply_markup=keyboard
+    )
+    await callback.answer()
+
+
+# === ВЕРНУТЬСЯ К СПИСКУ ПРЕПОДАВАТЕЛЕЙ ===
+@router.callback_query(F.data == "teachers_back")
+async def teachers_back(callback: types.CallbackQuery):
+    await callback.message.delete()
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="teacher_1")],
+        [InlineKeyboardButton(text="Камалетдинов Денис Святославович", callback_data="teacher_2")],
+        [InlineKeyboardButton(text="Груздева Татьяна Витальевна", callback_data="teacher_3")],
+        [InlineKeyboardButton(text="Сальникова Кристина Владимировна", callback_data="teacher_4")],
+        [InlineKeyboardButton(text="Шмелев Олег Валерьевич", callback_data="teacher_5")],
+        [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
+    ])
+
+    await callback.message.answer(
+        "<b>Преподаватели кафедры</b>\n\nВыберите преподавателя:",
+        parse_mode=ParseMode.HTML,
+        reply_markup=keyboard
+    )
+    await callback.answer()
 
 # ------------------- ЗАЧЁТНАЯ КНИЖКА -------------------
 @router.message(F.text == "📚 Зачётная книжка")
@@ -213,6 +333,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
