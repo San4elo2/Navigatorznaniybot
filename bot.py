@@ -53,56 +53,127 @@ async def schedule(message: types.Message):
         reply_markup=keyboard
     )
 
-# ------------------- СОТРУДНИКИ ДЕКАНАТА -------------------
-# === СОТРУДНИКИ ДЕКАНАТА (С ФОТО) ===
+# === СОТРУДНИКИ ДЕКАНАТА — СПИСОК ФИО ===
 @router.message(F.text == "👨‍💼 Сотрудники деканата")
-async def decanat(message: types.Message):
-    # Просто замени ссылки на свои фото (загрузи на https://imgur.com)
-    employees = [
-        {
-            "name": "Иванов Иван Иванович",
-            "post": "Декан факультета",
-            "cab": "Каб. 301",
-            "phone": "+7 (3412) 77-60-10",
-            "photo": "https://iimg.su/i/tVTzIK"   # ← твоё фото декана
-        },
-        {
-            "name": "Петрова Анна Сергеевна",
-            "post": "Зам. декана по учебной работе",
-            "cab": "Каб. 302",
-            "phone": "+7 (3412) 77-60-11",
-            "photo": "https://iimg.su/i/tVTzIK"   # ← фото зама
-        },
-        {
-            "name": "Сидорова Мария Петровна",
-            "post": "Секретарь деканата",
-            "cab": "Каб. 303",
-            "phone": "+7 (3412) 77-60-12",
-            "photo": "https://iimg.su/i/tVTzIK"   # ← фото секретаря
-        },
-        # ← можешь добавить ещё людей точно так же
-    ]
+async def decanat_list(message: types.Message):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="emp_1")],
+        [InlineKeyboardButton(text="Козлова Наталья Александровна", callback_data="emp_2")],
+        [InlineKeyboardButton(text="Смирнов Дмитрий Сергеевич", callback_data="emp_3")],
+        [InlineKeyboardButton(text="Волкова Ольга Николаевна", callback_data="emp_4")],
+        [InlineKeyboardButton(text="Петров Алексей Владимирович", callback_data="emp_5")],
+        [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
+    ])
+    
+    await message.answer(
+        "<b>Сотрудники и преподаватели деканата</b>\n\nВыберите человека:",
+        parse_mode=ParseMode.HTML,
+        reply_markup=keyboard
+    )
 
-    for emp in employees:
-        caption = (
-            f"<b>{emp['name']}</b>\n"
-            f"{emp['post']}\n\n"
-            f"Кабинет: {emp['cab']}\n"
-            f"Телефон: {emp['phone']}"
-        )
 
-        keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
-        ])
+# === ИНФОРМАЦИЯ О КОНКРЕТНОМ СОТРУДНИКЕ ===
+@router.callback_query(F.data.startswith("emp_"))
+async def show_employee(callback: types.CallbackQuery):
+    employees = {
+        "emp_1": {
+            "name": "Шулакова Елена Витальевна",
+            "post": "Старший преподаватель",
+            "phone": "—",
+            "email": "evstud@gmail.com",
+            "vk": "https://vk.com/id390204733",
+            "cab": "кафедра 6-509, 6-501, 6-511",
+            "subjects": "Введение в специальность, Теория менеджмента",
+            "photo": "https://iimg.su/i/tVTzIK"   # ← замени на своё фото
+        },
+        "emp_2": {
+            "name": "Козлова Наталья Александровна",
+            "post": "Доцент, к.э.н.",
+            "phone": "+7 (3412) 58-77-55 доб. 123",
+            "email": "kozlova@istu.ru",
+            "vk": "https://vk.com/id12345678",
+            "cab": "6-507",
+            "subjects": "Экономика предприятия, Управление персоналом",
+            "photo": "https://iimg.su/i/tVTzIK"
+        },
+        "emp_3": {
+            "name": "Смирнов Дмитрий Сергеевич",
+            "post": "Старший преподаватель",
+            "phone": "—",
+            "email": "d.smirnov@istu.ru",
+            "vk": "https://vk.com/dmitry_smirnov",
+            "cab": "6-510",
+            "subjects": "Информационные технологии в управлении, Базы данных",
+            "photo": "https://iimg.su/i/tVTzIK"
+        },
+        "emp_4": {
+            "name": "Волкова Ольга Николаевна",
+            "post": "Заведующая кафедрой",
+            "phone": "+7 (3412) 58-77-55 доб. 101",
+            "email": "volkova.on@istu.ru",
+            "vk": "https://vk.com/id9876543",
+            "cab": "6-505",
+            "subjects": "Стратегический менеджмент, Корпоративное управление",
+            "photo": "https://iimg.su/i/tVTzIK"
+        },
+        "emp_5": {
+            "name": "Петров Алексей Владимирович",
+            "post": "Доцент, к.т.н.",
+            "phone": "+7 (3412) 58-77-55 доб. 108",
+            "email": "petrov.av@istu.ru",
+            "vk": "https://vk.com/alex_petrov_istu",
+            "cab": "6-508",
+            "subjects": "Проектный менеджмент, Инновационный менеджмент",
+            "photo": "https://iimg.su/i/tVTzIK"
+        },
+    }
 
-        await message.answer_photo(
-            photo=emp["photo"],
-            caption=caption,
-            parse_mode=ParseMode.HTML,
-            reply_markup=keyboard
-        )
-        # Небольшая пауза между сообщениями, чтобы не было флуд-лимита
-        await asyncio.sleep(0.5)
+    emp = employees.get(callback.data)
+    if not emp:
+        await callback.answer("Ошибка")
+        return
+
+    caption = (
+        f"<b>{emp['name']}</b>\n"
+        f"<i>{emp['post']}</i>\n\n"
+        f"Телефон: {emp['phone']}\n"
+        f"Почта: {emp['email']}\n"
+        f"ВК: {emp['vk']}\n"
+        f"Кабинеты: {emp['cab']}\n"
+        f"Дисциплины: {emp['subjects']}"
+    )
+
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Написать в ВК", url=emp['vk'])],
+        [InlineKeyboardButton(text="← Назад к списку", callback_data="decanat_back")],
+        [InlineKeyboardButton(text="Главное меню", callback_data="back_main")]
+    ])
+
+    await callback.message.edit_media(
+        media=types.InputMediaPhoto(media=emp["photo"], caption=caption, parse_mode=ParseMode.HTML),
+        reply_markup=keyboard
+    )
+    await callback.answer()
+
+
+# === ВЕРНУТЬСЯ К СПИСКУ СОТРУДНИКОВ ===
+@router.callback_query(F.data == "decanat_back")
+async def decanat_back(callback: types.CallbackQuery):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Шулакова Елена Витальевна", callback_data="emp_1")],
+        [InlineKeyboardButton(text="Козлова Наталья Александровна", callback_data="emp_2")],
+        [InlineKeyboardButton(text="Смирнов Дмитрий Сергеевич", callback_data="emp_3")],
+        [InlineKeyboardButton(text="Волкова Ольга Николаевна", callback_data="emp_4")],
+        [InlineKeyboardButton(text="Петров Алексей Владимирович", callback_data="emp_5")],
+        [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
+    ])
+
+    await callback.message.edit_text(
+        "<b>Сотрудники и преподаватели деканата</b>\n\nВыберите человека:",
+        parse_mode=ParseMode.HTML,
+        reply_markup=keyboard
+    )
+    await callback.answer()
 # ------------------- ПРЕПОДАВАТЕЛИ -------------------
 @router.message(F.text == "👩‍🏫 Преподаватели")
 async def teachers(message: types.Message):
@@ -158,6 +229,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
