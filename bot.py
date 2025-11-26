@@ -80,8 +80,7 @@ async def teachers(message: types.Message):
     await message.answer("👩‍🏫 <b>Преподаватели</b>\n\nВыбери кафедру:", reply_markup=keyboard)
 
 # ------------------- ЗАЧЁТНАЯ КНИЖКА -------------------
-# ------------------- ЗАЧЁТНАЯ КНИЖКА (ИСПРАВЛЕНО) -------------------
-@router.message(F.text == "Зачётная книжка")
+@router.message(F.text == "📚 Зачётная книжка")
 async def zachetka(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
@@ -127,6 +126,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
