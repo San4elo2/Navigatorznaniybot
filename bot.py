@@ -54,7 +54,7 @@ async def schedule(message: types.Message):
     )
 
 # === СОТРУДНИКИ ДЕКАНАТА — СПИСОК ФИО ===
-@router.message(F.text == "Сотрудники деканата")
+@router.message(F.text == "👨‍💼 Сотрудники деканата")
 async def decanat_list(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Кузнецов Андрей Леонидович", callback_data="emp_1")],
@@ -191,6 +191,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
