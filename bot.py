@@ -80,18 +80,21 @@ async def teachers(message: types.Message):
     await message.answer("👩‍🏫 <b>Преподаватели</b>\n\nВыбери кафедру:", reply_markup=keyboard)
 
 # ------------------- ЗАЧЁТНАЯ КНИЖКА -------------------
-@router.message(F.text == "📚 Зачётная книжка")
+# ------------------- ЗАЧЁТНАЯ КНИЖКА (ИСПРАВЛЕНО) -------------------
+@router.message(F.text == "Зачётная книжка")
 async def zachetka(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
             text="Открыть зачётку в браузере",
-            url="https://lk.istu.ru/student/book"
+            url="https://ciu.n1.iit.istu.ru/student"
         )],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     
     await message.answer(
         "Электронная зачётная книжка ИжГТУ\n\n"
+        "Логин — номер зачётки (например 23Б1234)\n"
+        "Пароль — как от Wi-Fi и почты вуза",
         reply_markup=keyboard
     )
 # ------------------- ОБРАБОТКА CALLBACK -------------------
@@ -124,6 +127,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
