@@ -93,7 +93,9 @@ async def zachetka(message: types.Message):
         )],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
-    
+    await message.answer(
+        "Электронная зачётная книжка ИжГТУ",
+        reply_markup=keyboard
     )
 # ------------------- ОБРАБОТКА CALLBACK -------------------
 @router.callback_query()
@@ -125,6 +127,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
