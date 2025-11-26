@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: navigator-znaniy-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false  # Токен вводишь вручную в Render

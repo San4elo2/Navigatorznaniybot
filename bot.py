@@ -1,0 +1,118 @@
+from aiogram import Bot, Dispatcher, types, F
+from aiogram.enums import ParseMode
+from aiogram.filters import CommandStart
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram import Router
+import asyncio
+import logging
+
+# Твой токен от BotFather
+TOKEN = "8322577955:AAEpkmaX2HwLm9t2Ifo_YlWAoDccpC5w5HM"
+
+bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
+dp = Dispatcher()
+router = Router()
+
+# Главное меню (клавиатура)
+def get_main_menu():
+    buttons = [
+        [KeyboardButton(text="📅 Расписание")],
+        [KeyboardButton(text="👨‍💼 Сотрудники деканата")],
+        [KeyboardButton(text="👩‍🏫 Преподаватели")],
+        [KeyboardButton(text="📚 Зачётная книжка")],
+    ]
+    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+
+# ------------------- КОМАНДА /start -------------------
+@router.message(CommandStart())
+async def cmd_start(message: types.Message):
+    await message.answer(
+        f"Привет, <b>{message.from_user.first_name}</b>!\n\n"
+        "Я — <b>Навигатор Знаний</b> 📖\n"
+        "Выбирай нужный раздел ниже 👇",
+        reply_markup=get_main_menu()
+    )
+
+# ------------------- РАСПИСАНИЕ -------------------
+@router.message(F.text == "📅 Расписание")
+async def schedule(message: types.Message):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="На сегодня", callback_data="sched_today")],
+        [InlineKeyboardButton(text="На завтра", callback_data="sched_tomorrow")],
+        [InlineKeyboardButton(text="На неделю", callback_data="sched_week")],
+        [InlineKeyboardButton(text="🔙 Назад", callback_data="back_main")],
+    ])
+    await message.answer(
+        "📅 <b>Расписание</b>\n\n"
+        "Выбери период:",
+        reply_markup=keyboard
+    )
+
+# ------------------- СОТРУДНИКИ ДЕКАНАТА -------------------
+@router.message(F.text == "👨‍💼 Сотрудники деканата")
+async def decanat(message: types.Message):
+    text = (
+        "👨‍💼 <b>Сотрудники деканата</b>\n\n"
+        "Декан: Иванов Иван Иванович\n"
+        "Тел: +7 (999) 123-45-67\n"
+        "Каб: 301\n\n"
+        "Зам. декана по учебной работе: Петрова Анна Сергеевна\n"
+        "Тел: +7 (999) 765-43-21\n"
+        "Каб: 302\n\n"
+        "Секретарь: Сидорова Мария Петровна\n"
+        "Тел: +7 (999) 111-22-33"
+    )
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔙 Назад в меню", callback_data="back_main")]
+    ])
+    await message.answer(text, reply_markup=keyboard)
+
+# ------------------- ПРЕПОДАВАТЕЛИ -------------------
+@router.message(F.text == "👩‍🏫 Преподаватели")
+async def teachers(message: types.Message):
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="Кафедра ИТ", callback_data="dept_it")],
+        [InlineKeyboardButton(text="Кафедра экономики", callback_data="dept_econ")],
+        [InlineKeyboardButton(text="Кафедра иностранных языков", callback_data="dept_lang")],
+        [InlineKeyboardButton(text="🔙 Назад", callback_data="back_main")],
+    ])
+    await message.answer("👩‍🏫 <b>Преподаватели</b>\n\nВыбери кафедру:", reply_markup=keyboard)
+
+# ------------------- ЗАЧЁТНАЯ КНИЖКА -------------------
+@router.message(F.text == "📚 Зачётная книжка")
+async def zachetka(message: types.Message):
+    await message.answer(
+        "📚 <b>Зачётная книжка</b>\n\n"
+        "Чтобы посмотреть свои оценки, пришли мне номер своей зачётки (например: 23Б1234)"
+    )
+    # Здесь потом можно будет добавить проверку по базе
+
+# ------------------- ОБРАБОТКА CALLBACK -------------------
+@router.callback_query()
+async def callbacks(callback: types.CallbackQuery):
+    if callback.data == "back_main":
+        await callback.message.edit_text(
+            "Главное меню:",
+            reply_markup=None
+        )
+        await callback.message.answer("Выбери раздел 👇", reply_markup=get_main_menu())
+    
+    # Примеры для расписаний и кафедр (можно расширять)
+    elif callback.data.startswith("sched_"):
+        await callback.message.edit_text("Тут будет расписание... (пока в разработке 🚧)")
+    elif callback.data.startswith("dept_"):
+        await callback.message.edit_text(f"Список преподавателей кафедры... (пока в разработке 🚧)")
+    
+    await callback.answer()
+
+# Подключаем роутер
+dp.include_router(router)
+
+# ------------------- ЗАПУСК -------------------
+async def main():
+    logging.basicConfig(level=logging.INFO)
+    print("Бот Навигатор Знаний запущен!")
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
