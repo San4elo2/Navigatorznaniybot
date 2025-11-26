@@ -85,7 +85,7 @@ async def zachetka(message: types.Message):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
             text="Открыть зачётку в браузере",
-            url="https://ciu.n1.iit.istu.ru/student"
+            url="https://lk.istu.ru/student/book"
         )],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
@@ -127,6 +127,7 @@ async def main():
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
