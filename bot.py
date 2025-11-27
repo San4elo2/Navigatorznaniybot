@@ -330,11 +330,17 @@ dp.include_router(router)
 async def main():
     logging.basicConfig(level=logging.INFO)
     print("Бот Навигатор Знаний запущен!")
-    await dp.start_polling(bot)
+    while True:
+        try:
+            await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+        except Exception as e:
+            print(f"Ошибка polling: {e}")
+            await asyncio.sleep(5)  # перезапускаем через 5 сек
 
 if __name__ == "__main__":
 
     asyncio.run(main())
+
 
 
 
