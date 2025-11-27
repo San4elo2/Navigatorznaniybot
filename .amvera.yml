@@ -1,0 +1,8 @@
+version: "1"
+type: python:3.12  # Python 3.12+ для aiogram 3.x
+build:
+  command: pip install -r requirements.txt
+run:
+  command: python bot.py
+env:
+  - BOT_TOKEN: ""  # Токен добавишь в UI Amvera
