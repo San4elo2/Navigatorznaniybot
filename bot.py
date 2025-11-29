@@ -305,22 +305,23 @@ async def useful_rooms(message: types.Message):
 
     await message.answer(text, parse_mode=ParseMode.HTML, reply_markup=keyboard)
     
-# ------------------- ОБРАБОТКА CALLBACK -------------------
-@router.callback_query()
-async def callbacks(callback: types.CallbackQuery):
-    if callback.data == "back_main":
-        await callback.message.edit_text(
-            "Главное меню:",
-            reply_markup=None
-        )
-        await callback.message.answer("Выбери раздел 👇", reply_markup=get_main_menu())
-    
-    # Примеры для расписаний и кафедр (можно расширять)
-    elif callback.data.startswith("sched_"):
-        await callback.message.edit_text("Тут будет расписание... (пока в разработке 🚧)")
-    elif callback.data.startswith("dept_"):
-        await callback.message.edit_text(f"Список преподавателей кафедры... (пока в разработке 🚧)")
-    
+# ------------------- ОБРАБОТКА ВОЗВРАТА В ГЛАВНОЕ МЕНЮ -------------------
+@router.callback_query(F.data == "back_main")
+async def back_to_main(callback: types.CallbackQuery):
+    try:
+        # Пытаемся удалить сообщение (работает и для фото, и для текста)
+        await callback.message.delete()
+    except Exception:
+        # Если не удалось удалить (например, сообщение уже удалено) — просто игнорируем
+        pass
+
+    await callback.message.answer(
+        f"Привет, <b>{callback.from_user.first_name}</b>!\n\n"
+        "Я — <b>Навигатор Знаний</b> 📖\n"
+        "Выбирай нужный раздел ниже 👇",
+        parse_mode=ParseMode.HTML,
+        reply_markup=get_main_menu()
+    )
     await callback.answer()
 
 # Подключаем роутер
@@ -334,6 +335,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
