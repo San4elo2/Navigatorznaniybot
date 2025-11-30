@@ -83,7 +83,7 @@ async def show_employee(callback: types.CallbackQuery):
         "emp_2": {"name": "Мышкина Наталья Юрьевна", "post": "Ведущий документовед", "phone": "8 (3412) 770971, 89199156319", "email": "managerzfo@yandex.ru", "vk": "https://vk.com/id61466470", "cab": "6-200", "subjects": "справки, получение ведомостей, переводы на другую специальность, сроки сессии, какие экзамены, сроки сессии. ", "photo": "https://iimg.su/i/nEbNmA"},
         "emp_3": {"name": "Горохова Наталия Викторовна", "post": "Ведущий документовед", "phone": "8 (3412) 770971", "email": "human@istu.ru", "vk": "—", "cab": "6-200", "subjects": "Перевод, восстановление, академы", "photo": "https://iimg.su/i/s1rWG0"},
         "emp_4": {"name": "Вычужанина Елена Федоровна", "post": "И.о. заведующего кафедрой", "phone": "8-912-850-17-39", "email": "mim@istu.ru", "vk": "https://vk.com/id880437598", "cab": "6-501 / 6-509", "subjects": "Организационные вопросы, учебный процесс", "photo": "https://iimg.su/i/U5YebV"},
-        "emp_5": {"name": "Клименко Екатерина Александровна", "post": "Ведущий документовед", "phone": "8-912-016-47-71", "email": "e.a.trefilova@istu.ru", "vk": "https://vk.com/id880437598", "cab": "кафедра 6-509", "subjects": "Справки, заявления, зачётки", "photo": "https://iimg.su/i/Xhp7A8"},
+        "emp_5": {"name": "Клименко Екатерина Александровна", "post": "Ведущий документовед", "phone": "8-912-016-47-71", "email": "e.a.trefilova@istu.ru", "vk": "https://vk.com/id71299168", "cab": "кафедра 6-509", "subjects": "Справки, заявления, зачётки", "photo": "https://iimg.su/i/Xhp7A8"},
     }
 
     emp = employees.get(callback.data)
@@ -335,6 +335,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
