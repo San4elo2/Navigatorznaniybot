@@ -40,7 +40,7 @@ async def cmd_start(message: types.Message):
 # ------------------- РАСПИСАНИЕ -------------------
 @router.message(F.text.in_({"Расписание", "📅 Расписание"}))  # работает и с эмодзи, и без
 async def schedule(message: types.Message):
-    photo_url = "https://iimg.su/i/tVTzIK"
+    photo_url = "https://iimg.su/i/fEuhH1"
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Назад в меню", callback_data="back_main")]
@@ -335,6 +335,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
